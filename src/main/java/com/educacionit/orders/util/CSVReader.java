@@ -1,15 +1,20 @@
 package com.educacionit.orders.util;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import com.educacionit.orders.dto.CustomerDTO;
+
+import java.io.*;
+
 
 public class CSVReader {
 
     public static void main(String[] args) {
 
-        String csvFile = System.getProperty("user.dir") + "/src/main/resources/country.csv";
+        String s = File.separator;
+        String csvFile = System.getProperty("user.dir") + s + "src" + s + "main" + s + "resources" + s + "customers.csv";
+
+        CustomerDTO c = new CustomerDTO();
+
+
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
