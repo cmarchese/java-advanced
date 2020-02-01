@@ -4,6 +4,7 @@ package com.educacionit.orders;
 
 import java.util.Properties;
 
+import com.educacionit.orders.services.CRMSocketServer;
 import com.educacionit.orders.services.LoadFilesJobThread;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -34,10 +35,12 @@ public class App {
         JobDetail job = JobBuilder.newJob(LoadFilesJobThread.class)
                   .usingJobData("path", prop.getProperty("path.files"))
                   .usingJobData("extension", prop.getProperty("files.extension"))
+                  .usingJobData("crmServer", prop.getProperty("crm.server"))
+                  .usingJobData("crmPort", prop.getProperty("crm.port"))
                   .withIdentity("LoadFilesJob").build();
 
         // Specify the running period of the job
-        // CronTrigger the job to run an expression that fires every 1 minutes, at 10 seconds after the minute (i.e. 10:00:10 am,
+        // CronTrigger the job to run an expression that fires every at 20 seconds after the minute.
         logger.debug ("Creating Trigger...");
         CronTrigger cronTrigger = TriggerBuilder.newTrigger()
                     .withIdentity("crontrigger","crontriggergroup1")
@@ -51,5 +54,8 @@ public class App {
         sch.start();
         sch.scheduleJob(job, cronTrigger);
         logger.debug ("Scheduler Started...");
+
+        logger.info ("Starting CRM Socket Server...");
+        new CRMSocketServer().start(6666);
     }
 }

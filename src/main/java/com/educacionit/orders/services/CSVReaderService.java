@@ -47,6 +47,7 @@ public class CSVReaderService {
                 customer.setName(val[0].trim());
                 customer.setLastName(val[1].trim());
                 customer.setMobile(val[3].trim());
+                customer.setRaw (line);
 
                 logger.debug (String.format ("Adding %s to list", customer));
                 list.add(customer);
